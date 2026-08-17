@@ -1,0 +1,15 @@
+{
+  "name": "richfather-dashboard",
+  "version": "1.0.0",
+  "description": "부자아저씨 가난한아빠 - 매물현황 대시보드 정적 배포",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
