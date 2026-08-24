@@ -858,10 +858,12 @@ function render() {
   });
 }
 
-// --- visitor counter (CountAPI, free/no-signup) ---
+// --- visitor counter (countapi.mileshilliard.com, free/no-signup) ---
 (function() {
-  var namespace = 'richfather-giheung-dashboard';
+  var base = 'https://countapi.mileshilliard.com/api/v1/hit/';
   var today = new Date().toISOString().slice(0, 10);
+  var totalKey = 'richfather_giheung_dashboard_total';
+  var todayKey = 'richfather_giheung_dashboard_' + today;
   var totalCount = null, todayCount = null;
   function updateCounterDisplay() {
     var el = document.getElementById('visitorCounter');
@@ -869,11 +871,14 @@ function render() {
     if (totalCount === null || todayCount === null) return;
     el.innerHTML = '오늘 방문 <b>' + todayCount + '</b> · 누적 방문 <b>' + totalCount + '</b>';
   }
-  fetch('https://api.countapi.xyz/hit/' + namespace + '/total')
+  fetch(base + totalKey)
     .then(function(r) { return r.json(); })
     .then(function(d) { totalCount = d.value; updateCounterDisplay(); })
-    .catch(function() {});
-  fetch('https://api.countapi.xyz/hit/' + namespace + '/' + today)
+    .catch(function() {
+      var el = document.getElementById('visitorCounter');
+      if (el) el.style.display = 'none';
+    });
+  fetch(base + todayKey)
     .then(function(r) { return r.json(); })
     .then(function(d) { todayCount = d.value; updateCounterDisplay(); })
     .catch(function() {});
