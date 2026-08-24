@@ -191,6 +191,9 @@
   }
 
   .footer-note { margin-top:32px; padding-top:18px; border-top:1px solid #e7e1d3; text-align:center; font-size:11.5px; color:#a8a29e; line-height:1.6; }
+  .visitor-counter { margin-top:10px; text-align:center; font-size:12px; color:#8a8478; letter-spacing:.2px; }
+  .visitor-counter b { color:#4a453d; font-weight:600; }
+
 
   @media (max-width: 480px) {
     .stats { grid-template-columns: 1fr 1fr 1fr; gap:8px; }
@@ -787,6 +790,7 @@ function render() {
     CONTACT_HTML +
     tabbarHtml +
     bodyHtml +
+    '<div id="visitorCounter" class="visitor-counter">방문자 수 불러오는 중...</div>' +
     '<div class="footer-note">갭투자물건은 대표 매물뿐 아니라 같은 매물을 올린 중복 부동산들의 특징 문구까지 모두 확인해서, 세안고 · 전세안고 · 갭투자 · 긴잔금 · 무주택 · 긴전세 · 임차인 · 명도불가 · 입주불가 등 사실상 즉시입주가 어려운 표현이 하나라도 있으면 갭투자로 집계했습니다.<br/>매물 변동은 동 · 층 · 타입을 기준으로 매칭했으며, 평형별 추이는 조사일별 스냅샷 집계입니다.</div>';
 
   document.querySelectorAll('[data-category]').forEach(function(btn) {
@@ -853,6 +857,27 @@ function render() {
     render();
   });
 }
+
+// --- visitor counter (CountAPI, free/no-signup) ---
+(function() {
+  var namespace = 'richfather-giheung-dashboard';
+  var today = new Date().toISOString().slice(0, 10);
+  var totalCount = null, todayCount = null;
+  function updateCounterDisplay() {
+    var el = document.getElementById('visitorCounter');
+    if (!el) return;
+    if (totalCount === null || todayCount === null) return;
+    el.innerHTML = '오늘 방문 <b>' + todayCount + '</b> · 누적 방문 <b>' + totalCount + '</b>';
+  }
+  fetch('https://api.countapi.xyz/hit/' + namespace + '/total')
+    .then(function(r) { return r.json(); })
+    .then(function(d) { totalCount = d.value; updateCounterDisplay(); })
+    .catch(function() {});
+  fetch('https://api.countapi.xyz/hit/' + namespace + '/' + today)
+    .then(function(r) { return r.json(); })
+    .then(function(d) { todayCount = d.value; updateCounterDisplay(); })
+    .catch(function() {});
+})();
 
 render();
 </script>
