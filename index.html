@@ -190,6 +190,7 @@
   @media (max-width: 560px) {
     .trend-body { grid-template-columns: 1fr; }
     table.change-table { font-size:11px; }
+    table.persistgone-table th, table.persistgone-table td { padding:7px 5px; font-size:10.5px; }
   }
 
   .footer-note { margin-top:32px; padding-top:18px; border-top:1px solid #e7e1d3; text-align:center; font-size:11.5px; color:#a8a29e; line-height:1.6; }
@@ -795,14 +796,14 @@ function render() {
               '<td>' + g.size + '㎡</td>' +
               '<td>' + esc(g.dir || '-') + '</td>' +
               '<td>' + g.price.toFixed(2) + '억' + (g.gap ? '<span class="gap-tag">갭</span>' : '') + '</td>' +
-              '<td>' + esc(g.date) + ' 이후</td>' +
+              '<td>~' + esc(g.date) + '</td>' +
             '</tr>'
           );
         }).join('');
         return (
           '<div class="change-card" style="border-top-color:' + color + '">' +
             '<div class="change-card-title">' + esc(name) + ' <small>(' + goneByComplex[name].length + '건)</small></div>' +
-            '<table class="change-table"><thead><tr><th>동</th><th>층</th><th>타입</th><th>면적</th><th>향</th><th>가격</th><th>마지막 확인</th></tr></thead>' +
+            '<table class="change-table persistgone-table"><thead><tr><th>동</th><th>층</th><th>타입</th><th>면적</th><th>향</th><th>가격</th><th>마지막 확인</th></tr></thead>' +
             '<tbody>' + rows + '</tbody></table>' +
           '</div>'
         );
